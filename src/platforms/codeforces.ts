@@ -105,9 +105,11 @@ export default class Codeforces extends Platform {
 
     let response: any;
     try {
+      // Codeforces' contest.standings API rejects any extra query params for
+      // non-admin users with HTTP 400, so we must not send `count` here.
       response = await this.ofetch('/api/contest.standings', {
         responseType: 'json',
-        query: { contestId, count: 1 },
+        query: { contestId },
       });
     } catch (e) {
       throw new UnOJError(`Failed to fetch contest ${id}`, { cause: e });
